@@ -1,0 +1,59 @@
+@startuml UseCase
+skinparam packageStyle rectangle
+
+:Customer: as Customer
+:New Customer: as NewCustomer
+:Returning Customer: as ReturningCustomer
+:Shop Owner: as ShopOwner
+:Delivery Person: as DeliveryPerson
+
+Customer <|-- NewCustomer
+Customer <|-- ReturningCustomer
+
+rectangle Store{
+(Verify Password) as VerifyPassword
+(Display Login Error) as DisplayError
+(Log In) as Login
+(Browse Products) as BrowseProducts
+(Add Products to Shopping Cart) as AddProducts
+(Verify In Stock Product) as VerifyStock
+(View Shopping Cart) as ViewCart
+(Checkout) as Checkout
+(Debit Card) as Debit
+(Credit Card) as Credit
+(Cash on Delivery) as Cash
+(Payment Processing) as Payment
+(Shipping) as Shipping
+ }
+
+Customer -> Login
+Customer -> BrowseProducts
+Customer -> AddProducts
+Customer -> ViewCart
+Customer -> Checkout
+
+ShopOwner -> BrowseProducts
+ShopOwner -> AddProducts
+ShopOwner -> ViewCart
+ShopOwner -> Login
+
+DeliveryPerson -> Login
+DeliveryPerson -> Shipping
+
+DisplayError --> Login : extends
+
+Login --> VerifyPassword : includes
+AddProducts --> VerifyStock : includes
+Debit --> Payment : includes
+Credit --> Payment : includes
+Cash --> Payment : includes
+
+Checkout <|-- Debit
+Checkout <|-- Credit
+Checkout <|-- Cash
+
+
+@enduml
+
+
+
