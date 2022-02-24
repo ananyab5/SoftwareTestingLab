@@ -1,0 +1,42 @@
+@startuml SequenceDiagram
+skinparam Style strictuml
+
+actor Customer as Customer
+participant Interface as Interface
+participant Server as Server
+participant Shop as Shop
+participant DeliveryPerson as DeliveryPerson
+
+Customer -> Interface : Login request
+activate Interface
+Interface -> Server : Verify login details
+activate Server
+alt correct details
+    Interface <-- Server : Details verified
+    Customer <- Interface : Display home page
+else
+    Interface <-- Server : Invalid details 
+    Customer <- Interface : Display message : "Invalid Details"
+end
+Customer -> Interface : Search items
+Interface -> Server : Fetch details
+Interface <- Server : Provide details
+Customer <- Interface : Show details
+Customer -> Interface : Add or remove items from cart
+Interface -> Server : Make changes in database
+Customer -> Interface : Place an order
+Interface -> Server : Place order
+Server -> Shop : Send order details
+deactivate Server
+activate Shop
+Interface -> DeliveryPerson : Send order details
+deactivate Shop
+
+activate DeliveryPerson
+Interface <- DeliveryPerson : Send order update
+deactivate DeliveryPerson
+
+Interface -> Server : Send feedback
+activate Server
+
+@enduml
